@@ -8,13 +8,15 @@ public final class NTM_MainPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        System.out.println("NTM - Основной плагин запущен");
-        Bukkit.getPluginManager().registerEvents(new TestEvents(), this);
+        //System.out.println("NTM - Основной плагин запущен");
+        getLogger().info("NTM - Основной плагин запущен");
+        Bukkit.getPluginManager().registerEvents(new AsnycChatEventListener(), this);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        System.out.println("NTM - Основной плагин выключен");
+        //System.out.println("NTM - Основной плагин выключен");
+        getLogger().info("NTM - Основной плагин выключен");
     }
 }
