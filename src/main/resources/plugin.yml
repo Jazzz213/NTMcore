@@ -3,8 +3,9 @@ version: '${project.version}'
 main: by.quaks.ntm.ntm_mainplugin.NTM_MainPlugin
 api-version: 1.18
 commands:
-  tell:
+  msg:
     aliases:
       - m
+      - tell
     description: Отпраыить личное сообщкние
-    usage: /tell Никнейм
+    usage: /msg Никнейм
