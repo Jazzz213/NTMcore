@@ -12,7 +12,7 @@ public final class NTM_MainPlugin extends JavaPlugin {
         getLogger().info("NTM - Основной плагин запущен");
         getCommand("msg").setExecutor(new TellCommand());
         getCommand("msg").setTabCompleter(new TellCommand());
-        Bukkit.getPluginManager().registerEvents(new AsnycChatEventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new AsyncChatEventListener(), this);
     }
 
     @Override
