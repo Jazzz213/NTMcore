@@ -1,32 +1,67 @@
 package by.quaks.ntm.ntm_mainplugin;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import java.awt.*;
+
 public class AsyncChatEventListener implements Listener {
+    ClickEvent global_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "! ");
+    TextComponent dot = new TextComponent(" • ");
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(PlayerChatEvent event){
         event.setCancelled(true);
+        TextComponent line = new TextComponent("| ");
+        line.setColor(ChatColor.GRAY);
         Player p = event.getPlayer();
         Server s = p.getServer();
-        ConsoleCommandSender console = s.getConsoleSender();
-        double x = p.getLocation().getX();
-        double y = p.getLocation().getY();
-        double z = p.getLocation().getZ();
+        ClickEvent msg_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell "+p.getName()+" ");
+        TextComponent chatType = new TextComponent();
+        TextComponent name = new TextComponent(p.getName());
+        TextComponent result = new TextComponent();
+        String msg = event.getMessage();
         if(!event.getMessage().startsWith("!")){
-        s.dispatchCommand(s.getConsoleSender(),
-                "execute positioned "+x+" "+y+" "+z+" run tellraw @a[distance=0..100] [\"\",{\"text\":\"[L]\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"!\"},\"hoverEvent\":{\"action\":\"show_text\",\"contents\":\"\\u041d\\u0430\\u043f\\u0438\\u0441\\u0430\\u0442\\u044c \\u0432 \\u0433\\u043b\\u043e\\u0431\\u0430\\u043b\\u044c\\u043d\\u044b\\u0439 \\u0447\\u0430\\u0442\"}},{\"text\":\" |\",\"color\":\"gray\"},{\"text\":\" \"},{\"text\":\""+p.getName()+"\",\"color\":\"gold\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/tell "+p.getName()+"\"},\"hoverEvent\":{\"action\":\"show_text\",\"contents\":\"\\u041d\\u0430\\u043f\\u0438\\u0441\\u0430\\u0442\\u044c \\u043b\\u0438\\u0447\\u043d\\u043e\\u0435 \\u0441\\u043e\\u043e\\u0431\\u0449\\u0435\\u043d\\u0438\\u0435\"}},{\"text\":\" -\",\"color\":\"gray\"},{\"text\":\" "+event.getMessage()+"\"}]");
-                console.sendMessage(ChatColor.GRAY + p.getName() + " : " + event.getMessage());
+            chatType.setText("[L] ");
+            chatType.setColor(ChatColor.GRAY);
+            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Локальный чат").create()));
+            chat_comps(line, p, msg_suggest, chatType, name, result);
+            result.addExtra(event.getMessage());
+            for (Player other : Bukkit.getOnlinePlayers()) {
+                if (other.getLocation().distance(p.getLocation()) <= 100) {
+                    p.spigot().sendMessage(result);
+                }
+            }
+            //s.spigot().broadcast(result); - отправить всем
         }else{
-            event.setMessage(event.getMessage().replaceFirst("!",""));
-            s.dispatchCommand(s.getConsoleSender(),
-                    "tellraw @a [\"\",{\"text\":\"[G]\",\"color\":\"yellow\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"!\"},\"hoverEvent\":{\"action\":\"show_text\",\"contents\":\"\\u041d\\u0430\\u043f\\u0438\\u0441\\u0430\\u0442\\u044c \\u0432 \\u0433\\u043b\\u043e\\u0431\\u0430\\u043b\\u044c\\u043d\\u044b\\u0439 \\u0447\\u0430\\u0442\"}},{\"text\":\" |\",\"color\":\"gray\"},{\"text\":\" \"},{\"text\":\""+p.getName()+"\",\"color\":\"gold\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/tell "+p.getName()+"\"},\"hoverEvent\":{\"action\":\"show_text\",\"contents\":\"\\u041d\\u0430\\u043f\\u0438\\u0441\\u0430\\u0442\\u044c \\u043b\\u0438\\u0447\\u043d\\u043e\\u0435 \\u0441\\u043e\\u043e\\u0431\\u0449\\u0435\\u043d\\u0438\\u0435\"}},{\"text\":\" -\",\"color\":\"gray\"},{\"text\":\" "+event.getMessage()+"\"}]");
-                    console.sendMessage(ChatColor.YELLOW + p.getName() + " : " + event.getMessage());
+            msg = msg.replaceFirst("!","");
+            chatType.setText("[G] ");
+            chatType.setColor(ChatColor.of("#f4f47c"));
+            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Написать в глобольный чат").create()));
+            chatType.setClickEvent(global_suggest);
+            chat_comps(line, p, msg_suggest, chatType, name, result);
+            result.addExtra(msg);
+            s.spigot().broadcast(result);
         }
+    }
+
+    private void chat_comps(TextComponent line, Player p, ClickEvent msg_suggest, TextComponent chatType, TextComponent name, TextComponent result) {
+        name.setColor(ChatColor.of("#9EFF86"));
+        name.setClickEvent(msg_suggest);
+        name.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("/tell "+p.getName()).create()));
+        result.addExtra(chatType);
+        result.addExtra(line);
+        result.addExtra(name);
+        result.addExtra(dot);
     }
 }
