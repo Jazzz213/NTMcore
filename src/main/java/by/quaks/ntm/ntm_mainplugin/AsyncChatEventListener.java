@@ -38,8 +38,10 @@ public class AsyncChatEventListener implements Listener {
             chat_comps(line, p, msg_suggest, chatType, name, result);
             result.addExtra(event.getMessage());
             for (Player other : Bukkit.getOnlinePlayers()) {
-                if (other.getLocation().distance(p.getLocation()) <= 100) {
-                    p.spigot().sendMessage(result);
+                if(p.getWorld().getEnvironment().name().equals(other.getWorld().getEnvironment().name())){
+                    if (other.getLocation().distance(p.getLocation()) <= 100) {
+                        other.spigot().sendMessage(result);
+                    }
                 }
             }
             //s.spigot().broadcast(result); - отправить всем

@@ -5,6 +5,7 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class TellCommand implements CommandExecutor, TabExecutor {
@@ -53,7 +54,7 @@ public class TellCommand implements CommandExecutor, TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        List<String> list = Arrays.asList();
+        List<String> list = Collections.emptyList();
         if(args.length==1){
             return null;
         } else{
