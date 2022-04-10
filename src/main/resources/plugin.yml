@@ -9,3 +9,6 @@ commands:
       - tell
     description: Отпраыить личное сообщкние
     usage: /msg Никнейм
+  burp:
+    description: Смачно burp'нуть
+    usage: /burp
