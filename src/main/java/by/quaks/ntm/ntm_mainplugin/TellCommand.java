@@ -56,19 +56,19 @@ public class TellCommand implements CommandExecutor, TabExecutor {
                     left_comp.addExtra(receive_comp);
                     left_comp.addExtra("]");
                     left_comp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell "+receiver.getName()+" "));
-                    left_comp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("/tell "+sender.getName()).create()));
+                    left_comp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("/tell "+receiver.getName()).create()));
                     //console.sendMessage(ChatColor.GOLD + p.getName() + " → " + receiver.getName() +" :" + message);
                     // TODO: Разобраться с BuildComponent и переделать
                     msg.addExtra(left_comp);
                     msg.addExtra(" :"+message);
                     p.spigot().sendMessage(msg);
                     left_comp1.setText("[");
-                    left_comp1.addExtra(receive_comp);
-                    left_comp1.addExtra(arrow);
                     left_comp1.addExtra(send_comp);
+                    left_comp1.addExtra(arrow);
+                    left_comp1.addExtra(receive_comp);
                     left_comp1.addExtra("]");
                     left_comp1.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell "+p.getName()+" "));
-                    left_comp1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("/tell"+p.getName()).create()));
+                    left_comp1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("/tell "+p.getName()).create()));
                     msg1.addExtra(left_comp1);
                     msg1.addExtra(" :"+message);
                     receiver.spigot().sendMessage(msg1);
