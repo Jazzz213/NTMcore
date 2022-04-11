@@ -15,12 +15,14 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
 import java.awt.*;
+import java.io.IOException;
 
-public class AsyncChatEventListener implements Listener {
+public class AsyncChatEventListener implements Listener{
     ClickEvent global_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "! ");
+    ClickEvent trade_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "$ ");
     TextComponent dot = new TextComponent(" • ");
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerChat(PlayerChatEvent event){
+    public void onPlayerChat(PlayerChatEvent event) throws IOException {
         event.setCancelled(true);
         TextComponent line = new TextComponent("| ");
         line.setColor(ChatColor.GRAY);
@@ -31,7 +33,21 @@ public class AsyncChatEventListener implements Listener {
         TextComponent name = new TextComponent(p.getName());
         TextComponent result = new TextComponent();
         String msg = event.getMessage();
-        if(!event.getMessage().startsWith("!")){
+
+        if(event.getMessage().startsWith("$")){
+            msg = msg.replaceFirst(" ","");
+            msg = msg.replaceFirst("[$]","");
+            chatType.setText("[$] ");
+            chatType.setColor(ChatColor.GREEN);
+            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Торговый чат").create()));
+            chatType.setClickEvent(trade_suggest);
+            chat_comps(line, p, msg_suggest, chatType, name, result);
+            result.addExtra(msg);
+            s.spigot().broadcast(result);
+            return;
+            //s.spigot().broadcast(result); - отправить всем
+        }
+        if(!event.getMessage().startsWith("!") && !event.getMessage().startsWith("$")){
             chatType.setText("[L] ");
             chatType.setColor(ChatColor.GRAY);
             chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Локальный чат").create()));
