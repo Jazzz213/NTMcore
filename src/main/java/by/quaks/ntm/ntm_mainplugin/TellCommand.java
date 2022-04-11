@@ -18,7 +18,7 @@ public class TellCommand implements CommandExecutor, TabExecutor {
             if(args.length==0){
                 p.sendMessage(
                         ChatColor.RED+"Неизвестная или неполная команда:\n"+
-                                ChatColor.GRAY+"/"+label+" "+ChatColor.RED+"[никнейм]"+ChatColor.RED+" [сообщение]");
+                                ChatColor.GRAY+"/"+label+" "+ChatColor.RED+"[никнейм] [сообщение]");
             }
             if(args.length==1){
                 Player receiver = Bukkit.getPlayerExact(args[0]);
