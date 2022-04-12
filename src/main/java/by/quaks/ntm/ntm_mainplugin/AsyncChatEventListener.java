@@ -15,6 +15,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
 import java.awt.*;
+import java.awt.print.Paper;
 import java.io.IOException;
 
 public class AsyncChatEventListener implements Listener{
@@ -44,6 +45,7 @@ public class AsyncChatEventListener implements Listener{
             chat_comps(line, p, msg_suggest, chatType, name, result);
             result.addExtra(msg);
             s.spigot().broadcast(result);
+            Bukkit.getLogger().info("[$] | "+p.getName()+" • "+event.getMessage());
             return;
             //s.spigot().broadcast(result); - отправить всем
         }
@@ -53,6 +55,7 @@ public class AsyncChatEventListener implements Listener{
             chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Локальный чат").create()));
             chat_comps(line, p, msg_suggest, chatType, name, result);
             result.addExtra(event.getMessage());
+            Bukkit.getLogger().info("[L] | "+p.getName()+" • "+event.getMessage());
             for (Player other : Bukkit.getOnlinePlayers()) {
                 if(p.getWorld().getEnvironment().name().equals(other.getWorld().getEnvironment().name())){
                     if (other.getLocation().distance(p.getLocation()) <= 100) {
@@ -70,6 +73,7 @@ public class AsyncChatEventListener implements Listener{
             chat_comps(line, p, msg_suggest, chatType, name, result);
             result.addExtra(msg);
             s.spigot().broadcast(result);
+            Bukkit.getLogger().info("[G] | "+p.getName()+" • "+event.getMessage());
         }
     }
 
