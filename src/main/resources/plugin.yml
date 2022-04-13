@@ -12,3 +12,6 @@ commands:
   burp:
     description: Смачно burp'нуть
     usage: /burp
+  ignore:
+    description: Игнорировать сообщения от человека в ЛС
+    usage: /ignore Никнейм

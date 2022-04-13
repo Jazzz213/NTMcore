@@ -33,6 +33,12 @@ public class TellCommand implements CommandExecutor, TabExecutor {
             }
             if(args.length>1){
                 Player receiver = Bukkit.getPlayerExact(args[0]);
+                if (receiver.getScoreboardTags().contains("ignore."+p.getName())){
+                    p.sendMessage(
+                                    ChatColor.RED + "Игрок вас игнорирует"
+                    );
+                    return true;
+                }
                 if(receiver!=null){
                     args[0]="";
                     String message = String.join(" ", args);
@@ -73,6 +79,7 @@ public class TellCommand implements CommandExecutor, TabExecutor {
                     msg1.addExtra(" :"+message);
                     receiver.spigot().sendMessage(msg1);
                     receiver.playNote(receiver.getLocation(), Instrument.BELL, Note.flat(0, Note.Tone.A));
+                    Bukkit.getLogger().info("["+p.getName()+" → "+receiver.getName()+"] :"+message);
                 }else{
                     p.sendMessage(
                             ChatColor.RED+"Игрок оффлайн");
