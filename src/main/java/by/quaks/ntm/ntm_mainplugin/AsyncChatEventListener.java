@@ -68,7 +68,7 @@ public class AsyncChatEventListener implements Listener{
             msg = msg.replaceFirst("!","");
             chatType.setText("[G] ");
             chatType.setColor(ChatColor.of("#f4f47c"));
-            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Написать в глобольный чат").create()));
+            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Написать в глобальный чат").create()));
             chatType.setClickEvent(global_suggest);
             chat_comps(line, p, msg_suggest, chatType, name, result);
             result.addExtra(msg);
