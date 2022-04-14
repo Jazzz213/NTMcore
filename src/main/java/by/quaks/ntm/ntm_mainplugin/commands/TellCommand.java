@@ -14,7 +14,6 @@ public class TellCommand implements CommandExecutor, TabExecutor {
         if (sender instanceof Player){
             Player p = (Player) sender;
             Server s = p.getServer();
-            ConsoleCommandSender console = s.getConsoleSender();
             if(args.length==0){
                 p.sendMessage(
                         ChatColor.RED+"Неизвестная или неполная команда:\n"+
