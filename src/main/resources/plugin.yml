@@ -15,3 +15,8 @@ commands:
   ignore:
     description: Игнорировать сообщения от человека в ЛС
     usage: /ignore Никнейм
+  permmute:
+    description: Выдан мут
+    usage: /mute Никнейм
+    aliases:
+      - pmute

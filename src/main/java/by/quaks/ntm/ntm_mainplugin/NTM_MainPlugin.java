@@ -14,8 +14,10 @@ public final class NTM_MainPlugin extends JavaPlugin {
         getCommand("msg").setTabCompleter(new TellCommand());
         getCommand("burp").setExecutor(new burpCommand());
         getCommand("ignore").setExecutor(new IgnoreCommand());
+        getCommand("permmute").setExecutor(new PermMuteCMD());
         Bukkit.getPluginManager().registerEvents(new AsyncChatEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new ClickOnPlayerGetName(), this);
+        Bukkit.getPluginManager().registerEvents(new MuteListener(),this);
     }
 
     @Override

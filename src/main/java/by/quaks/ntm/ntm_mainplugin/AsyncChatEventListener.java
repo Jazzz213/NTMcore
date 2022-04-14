@@ -14,16 +14,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
-import java.awt.*;
-import java.awt.print.Paper;
-import java.io.IOException;
-
 public class AsyncChatEventListener implements Listener{
     ClickEvent global_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "! ");
-    ClickEvent trade_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "$ ");
+    ClickEvent trade_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "$");
     TextComponent dot = new TextComponent(" • ");
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerChat(PlayerChatEvent event) throws IOException {
+    public void onPlayerChat(PlayerChatEvent event){
         event.setCancelled(true);
         TextComponent line = new TextComponent("| ");
         line.setColor(ChatColor.GRAY);
@@ -36,7 +32,6 @@ public class AsyncChatEventListener implements Listener{
         String msg = event.getMessage();
 
         if(event.getMessage().startsWith("$")){
-            msg = msg.replaceFirst(" ","");
             msg = msg.replaceFirst("[$]","");
             chatType.setText("[$] ");
             chatType.setColor(ChatColor.GREEN);
@@ -45,7 +40,7 @@ public class AsyncChatEventListener implements Listener{
             chat_comps(line, p, msg_suggest, chatType, name, result);
             result.addExtra(msg);
             s.spigot().broadcast(result);
-            Bukkit.getLogger().info("[$] | "+p.getName()+" • "+event.getMessage());
+            Bukkit.getLogger().info("[NTMP] [$] | "+p.getName()+" • "+event.getMessage());
             return;
             //s.spigot().broadcast(result); - отправить всем
         }
@@ -55,7 +50,7 @@ public class AsyncChatEventListener implements Listener{
             chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Локальный чат").create()));
             chat_comps(line, p, msg_suggest, chatType, name, result);
             result.addExtra(event.getMessage());
-            Bukkit.getLogger().info("[L] | "+p.getName()+" • "+event.getMessage());
+            Bukkit.getLogger().info("[NTMP] [L] | "+p.getName()+" • "+event.getMessage());
             for (Player other : Bukkit.getOnlinePlayers()) {
                 if(p.getWorld().getEnvironment().name().equals(other.getWorld().getEnvironment().name())){
                     if (other.getLocation().distance(p.getLocation()) <= 100) {
@@ -73,7 +68,7 @@ public class AsyncChatEventListener implements Listener{
             chat_comps(line, p, msg_suggest, chatType, name, result);
             result.addExtra(msg);
             s.spigot().broadcast(result);
-            Bukkit.getLogger().info("[G] | "+p.getName()+" • "+event.getMessage());
+            Bukkit.getLogger().info("[NTMP] [G] | "+p.getName()+" • "+event.getMessage());
         }
     }
 
