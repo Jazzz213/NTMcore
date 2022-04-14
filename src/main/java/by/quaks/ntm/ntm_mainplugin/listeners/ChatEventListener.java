@@ -1,4 +1,4 @@
-package by.quaks.ntm.ntm_mainplugin;
+package by.quaks.ntm.ntm_mainplugin.listeners;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -7,14 +7,12 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
-public class AsyncChatEventListener implements Listener{
+public class ChatEventListener implements Listener{
     ClickEvent global_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "! ");
     ClickEvent trade_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "$");
     TextComponent dot = new TextComponent(" • ");

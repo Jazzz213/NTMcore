@@ -1,12 +1,11 @@
-package by.quaks.ntm.ntm_mainplugin;
+package by.quaks.ntm.ntm_mainplugin.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class burpCommand implements CommandExecutor {
+public class BurpCommand implements CommandExecutor {
     /**
      * Executes the given command, returning its success.
      * <br>

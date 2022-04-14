@@ -1,4 +1,4 @@
-package by.quaks.ntm.ntm_mainplugin;
+package by.quaks.ntm.ntm_mainplugin.listeners;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-public class ClickOnPlayerGetName implements Listener
+public class ClickOnPlayerEventListener implements Listener
 {
     @EventHandler
     public void onPlayerChat(PlayerInteractEntityEvent event)

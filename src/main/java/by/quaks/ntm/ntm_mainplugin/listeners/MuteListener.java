@@ -1,4 +1,4 @@
-package by.quaks.ntm.ntm_mainplugin;
+package by.quaks.ntm.ntm_mainplugin.listeners;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.event.EventHandler;
