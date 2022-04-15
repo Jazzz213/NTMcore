@@ -7,6 +7,7 @@ commands:
     aliases:
       - m
       - tell
+      - w
     description: Отпраыить личное сообщение
     usage: /msg Никнейм
   burp:
@@ -20,3 +21,5 @@ commands:
     usage: /mute Никнейм
     aliases:
       - pmute
+depend:
+  - DiscordSRV
