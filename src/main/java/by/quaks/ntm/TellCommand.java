@@ -1,4 +1,4 @@
-package by.quaks.ntm.ntm_mainplugin.commands;
+package by.quaks.ntm;
 
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;

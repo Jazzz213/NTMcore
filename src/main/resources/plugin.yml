@@ -1,6 +1,6 @@
-name: NTM_MainPlugin
+name: NTM
 version: '${project.version}'
-main: by.quaks.ntm.ntm_mainplugin.NTM_MainPlugin
+main: by.quaks.ntm.NTM
 api-version: 1.18
 commands:
   msg:
