@@ -1,12 +1,49 @@
 package by.quaks.ntm;
 
+import by.quaks.ntm.commands.BurpCommand;
+import by.quaks.ntm.commands.IgnoreCommand;
+import by.quaks.ntm.commands.PMuteCommand;
+import by.quaks.ntm.commands.TellCommand;
+import by.quaks.ntm.listeners.ChatEventListener;
+import by.quaks.ntm.listeners.ClickOnPlayerEventListener;
+import by.quaks.ntm.listeners.DiscordSRVListener;
+import by.quaks.ntm.listeners.MuteListener;
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
+import github.scarsz.discordsrv.util.DiscordUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class NTM extends JavaPlugin {
+public final class NTM extends JavaPlugin implements Listener {
+
+    private DiscordSRVListener discordsrvListener = new DiscordSRVListener(this);
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(event.getPlayer().getUniqueId());
+        if (discordId == null) {
+            event.getPlayer().sendMessage(ChatColor.RED + "Ваш аккаунд не связан с учётной записью Discord, используйте /discord link");
+            return;
+        }
+
+        User user = DiscordUtil.getJda().getUserById(discordId);
+        if (user == null) {
+            event.getPlayer().sendMessage(ChatColor.YELLOW + "Не удаётся найти Discord-аккаунт, к которому привязана ваша учётная запись");
+            return;
+        }
+
+        //event.getPlayer().sendMessage(ChatColor.GREEN + "You're linked to " + user.getAsTag());
+    }
 
     @Override
     public void onEnable() {
+        DiscordSRV.api.subscribe(discordsrvListener);
+        getServer().getPluginManager().registerEvents(this, this);
         // Plugin startup logic
         //System.out.println("NTM - Основной плагин запущен");
         getLogger().info("NTM - Основной плагин запущен");
@@ -25,5 +62,6 @@ public final class NTM extends JavaPlugin {
         // Plugin shutdown logic
         //System.out.println("NTM - Основной плагин выключен");
         getLogger().info("NTM - Основной плагин выключен");
+        DiscordSRV.api.unsubscribe(discordsrvListener);
     }
 }
