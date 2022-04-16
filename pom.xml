@@ -62,9 +62,21 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <!-- discordsrv -->
+        <repository>
+            <id>Scarsz-Nexus</id>
+            <url>https://nexus.scarsz.me/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <!-- discordsrv -->
+        <dependency>
+            <groupId>com.discordsrv</groupId>
+            <artifactId>discordsrv</artifactId>
+            <version>1.21.1</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
