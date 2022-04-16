@@ -7,19 +7,25 @@ import github.scarsz.discordsrv.api.events.*;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.util.DiscordUtil;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.UUID;
 
 public class DiscordSRVListener {
-
+    TextComponent dot = new TextComponent(" • ");
     private final Plugin plugin;
 
     public DiscordSRVListener(Plugin plugin) {
         this.plugin = plugin;
     }
-
+    /**
     @Subscribe
     public void discordReadyEvent(DiscordReadyEvent event) {
         // Example of using JDA's events
@@ -52,7 +58,6 @@ public class DiscordSRVListener {
 
         Bukkit.broadcastMessage(event.getPlayer().getName() + " just linked their MC account to their Discord user " + event.getUser() + "!");
     }
-
     @Subscribe
     public void accountUnlinked(AccountUnlinkedEvent event) {
         // Example of DM:ing user on unlink
@@ -75,25 +80,77 @@ public class DiscordSRVListener {
         } else {
             plugin.getLogger().warning("Channel called \"unlinks\" could not be found in the DiscordSRV configuration");
         }
-    }
+    }**/
+    @Subscribe(priority = ListenerPriority.MONITOR)
+    public void AdminChatDiscordMessageReceived(DiscordGuildMessageReceivedEvent event) {
+        // Example of logging a message sent in Discord
 
+        //plugin.getLogger().info("Received a chat message on Discord: " + event.getMessage());
+        if(event.getChannel().getId().equals("959935354536861727")){
+            for (Player p1 : Bukkit.getOnlinePlayers()){
+                if(p1.hasPermission("group.moderator")||p1.isOp()){
+                    ClickEvent admin_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@");
+                    TextComponent chatType = new TextComponent();
+                    Player p = Bukkit.getPlayer(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getMember().getId()));
+                    assert p != null;
+                    TextComponent name = new TextComponent(p.getName());
+                    TextComponent result = new TextComponent();
+                    String msg = event.getMessage().getContentDisplay();
+                    chatType.setText("[A] ");
+                    chatType.setColor(ChatColor.RED);
+                    chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Админ-чат").create()));
+                    chatType.setClickEvent(admin_suggest);
+                    TextComponent line = new TextComponent("| ");
+                    line.setColor(ChatColor.GRAY);
+                    chat_comps(line, p, chatType, name, result);
+                    result.addExtra(msg);
+                    p1.spigot().sendMessage(result);
+                }
+            }
+        }
+    }
+    private void chat_comps(TextComponent line, Player p, TextComponent chatType, TextComponent name, TextComponent result) {
+        name.setColor(ChatColor.of("#9EFF86"));
+        name.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Сообщение отправлено через Discord").create()));
+        result.addExtra(chatType);
+        result.addExtra(line);
+        name.setUnderlined(true);
+        result.addExtra(name);
+        result.addExtra(dot);
+    }
     @Subscribe
     public void discordMessageProcessed(DiscordGuildMessagePostProcessEvent event) {
         // Example of modifying a Discord -> Minecraft message
         UUID authorLinkedUuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getAuthor().getId());
-        event.setProcessedMessage(event.getProcessedMessage().replace("cat", "dog")); // dogs are superior to cats, obviously
-        event.setProcessedMessage(event.getProcessedMessage().replace(event.getAuthor().getName(),Bukkit.getOfflinePlayer(authorLinkedUuid).getName()));
-    }
-    @Subscribe
-    public void attachmentDiscordMessageProcessed(DiscordGuildMessagePreProcessEvent event) {
-        // Example of modifying a Discord -> Minecraft message
-        UUID authorLinkedUuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getAuthor().getId());
+        event.setProcessedMessage(event.getProcessedMessage().replace("cat", "dog"));
+        // dogs are superior to cats, obviously
+        if(authorLinkedUuid!=null) {
+            event.setProcessedMessage(event.getProcessedMessage().replace(event.getAuthor().getName(), Bukkit.getOfflinePlayer(authorLinkedUuid).getName()));
+        } else {
+            DiscordUtil.removeRolesFromMember(event.getMember(), DiscordUtil.getRole("960690850357186560"));
+            event.getMessage().addReaction("\uD83C\uDDF7")
+                    .queue(v2 -> event.getMessage().addReaction("\uD83C\uDDEA")                                    // реакция not x linked
+                            .queue(v3 -> event.getMessage().addReaction("\uD83C\uDDF1")
+                                    .queue(v4 -> event.getMessage().addReaction("\uD83C\uDDEE")
+                                            .queue(v5 -> event.getMessage().addReaction("\uD83C\uDDF3")
+                                                    .queue(v6 -> event.getMessage().addReaction("\uD83C\uDDF0")
+                                                            .queue())))));
+            User user = DiscordUtil.getJda().getUserById(event.getMember().getId());
+            if (user != null) {
+                user.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage("Перепривяжите свой аккаунт используя /discord link в игре").queue());
+            }
+            event.setCancelled(true);
+        }
     }
 
     @Subscribe
     public void prefixRemover(GameChatMessagePreProcessEvent event){
         if(event.getMessage().startsWith("$") || event.getMessage().startsWith("!")){
             event.setMessage(event.getMessage().replaceFirst("[$!]", ""));
+        }
+        if((event.getPlayer().hasPermission("moderator")||event.getPlayer().isOp())&&event.getMessage().startsWith("@a")){
+            event.setMessage(event.getMessage().replaceFirst("[@a]", ""));
+            DiscordUtil.sendMessage(DiscordUtil.getTextChannelById("959935354536861727"),event.getMessage());
         }
     }
 
