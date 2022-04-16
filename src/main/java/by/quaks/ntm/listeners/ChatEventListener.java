@@ -1,5 +1,8 @@
 package by.quaks.ntm.listeners;
 
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.util.DiscordUtil;
+import github.scarsz.discordsrv.util.WebhookUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -15,6 +18,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 public class ChatEventListener implements Listener{
     ClickEvent global_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "! ");
     ClickEvent trade_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "$");
+    ClickEvent admin_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@");
     TextComponent dot = new TextComponent(" • ");
     @EventHandler(ignoreCancelled = true)
     public void onPlayerChat(PlayerChatEvent event){
@@ -29,6 +33,26 @@ public class ChatEventListener implements Listener{
         TextComponent result = new TextComponent();
         String msg = event.getMessage();
 
+
+        if(event.getMessage().startsWith("@")&&event.getPlayer().hasPermission("group.moderator")){
+            msg = msg.replaceFirst("@","");
+            chatType.setText("[A] ");
+            chatType.setColor(ChatColor.RED);
+            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Админ-чат").create()));
+            chatType.setClickEvent(admin_suggest);
+            chat_comps(line, p, msg_suggest, chatType, name, result);
+            result.addExtra(msg);
+            for (Player p1 : Bukkit.getOnlinePlayers()){
+                if(p1.hasPermission("group.moderator")){
+                    p1.spigot().sendMessage(result);
+                }
+            }
+            //s.spigot().broadcast(result);
+            WebhookUtil.deliverMessage(DiscordUtil.getTextChannelById("959935354536861727"),event.getPlayer(),msg);
+            Bukkit.getLogger().info("[NTMP] [A] | "+p.getName()+" • "+event.getMessage());
+            return;
+            //s.spigot().broadcast(result); - отправить всем
+        }
         if(event.getMessage().startsWith("$")){
             msg = msg.replaceFirst("[$]","");
             chatType.setText("[$] ");
