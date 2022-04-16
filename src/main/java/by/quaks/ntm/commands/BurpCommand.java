@@ -1,4 +1,4 @@
-package by.quaks.ntm;
+package by.quaks.ntm.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

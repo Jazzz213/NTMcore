@@ -1,4 +1,4 @@
-package by.quaks.ntm;
+package by.quaks.ntm.listeners;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
