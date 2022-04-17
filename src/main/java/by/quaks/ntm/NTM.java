@@ -54,6 +54,7 @@ public final class NTM extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new ChatEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new ClickOnPlayerEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new MuteListener(),this);
+        Bukkit.getPluginManager().registerEvents(new DeathListener(),this);
     }
 
     @Override
