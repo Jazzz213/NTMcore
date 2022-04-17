@@ -13,6 +13,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -91,7 +92,7 @@ public class DiscordSRVListener {
                 if(p1.hasPermission("group.moderator")||p1.isOp()){
                     ClickEvent admin_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@");
                     TextComponent chatType = new TextComponent();
-                    Player p = Bukkit.getPlayer(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getMember().getId()));
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getMember().getId()));
                     assert p != null;
                     TextComponent name = new TextComponent(p.getName());
                     TextComponent result = new TextComponent();
@@ -102,14 +103,14 @@ public class DiscordSRVListener {
                     chatType.setClickEvent(admin_suggest);
                     TextComponent line = new TextComponent("| ");
                     line.setColor(ChatColor.GRAY);
-                    chat_comps(line, p, chatType, name, result);
+                    chat_comps(line, chatType, name, result);
                     result.addExtra(msg);
                     p1.spigot().sendMessage(result);
                 }
             }
         }
     }
-    private void chat_comps(TextComponent line, Player p, TextComponent chatType, TextComponent name, TextComponent result) {
+    private void chat_comps(TextComponent line, TextComponent chatType, TextComponent name, TextComponent result) {
         name.setColor(ChatColor.of("#9EFF86"));
         name.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Сообщение отправлено через Discord").create()));
         result.addExtra(chatType);
