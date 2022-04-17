@@ -4,10 +4,7 @@ import by.quaks.ntm.commands.BurpCommand;
 import by.quaks.ntm.commands.IgnoreCommand;
 import by.quaks.ntm.commands.PMuteCommand;
 import by.quaks.ntm.commands.TellCommand;
-import by.quaks.ntm.listeners.ChatEventListener;
-import by.quaks.ntm.listeners.ClickOnPlayerEventListener;
-import by.quaks.ntm.listeners.DiscordSRVListener;
-import by.quaks.ntm.listeners.MuteListener;
+import by.quaks.ntm.listeners.*;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.util.DiscordUtil;
@@ -22,12 +19,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class NTM extends JavaPlugin implements Listener {
 
     private DiscordSRVListener discordsrvListener = new DiscordSRVListener(this);
+    private DeathListenerSRV deathListener = new DeathListenerSRV(this);
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
         String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(event.getPlayer().getUniqueId());
         if (discordId == null) {
-            event.getPlayer().sendMessage(ChatColor.RED + "Ваш аккаунд не связан с учётной записью Discord, используйте /discord link");
+            event.getPlayer().sendMessage(ChatColor.RED + "Ваш аккаунт не связан с учётной записью Discord, используйте /discord link");
             return;
         }
 
@@ -43,6 +41,7 @@ public final class NTM extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         DiscordSRV.api.subscribe(discordsrvListener);
+        DiscordSRV.api.subscribe(deathListener);
         getServer().getPluginManager().registerEvents(this, this);
         // Plugin startup logic
         //System.out.println("NTM - Основной плагин запущен");
@@ -63,5 +62,6 @@ public final class NTM extends JavaPlugin implements Listener {
         //System.out.println("NTM - Основной плагин выключен");
         getLogger().info("NTM - Основной плагин выключен");
         DiscordSRV.api.unsubscribe(discordsrvListener);
+        DiscordSRV.api.unsubscribe(deathListener);
     }
 }
