@@ -4,6 +4,7 @@ import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.ListenerPriority;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.*;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.util.DiscordUtil;
@@ -18,6 +19,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DiscordSRVListener {
     TextComponent dot = new TextComponent(" • ");
@@ -104,11 +107,65 @@ public class DiscordSRVListener {
                     TextComponent line = new TextComponent("| ");
                     line.setColor(ChatColor.GRAY);
                     chat_comps(line, chatType, name, result);
-                    result.addExtra(msg);
+                    result.addExtra(removeUrl(msg)+" ");
+                    result.addExtra(getUrls(msg));
+                    if(!event.getMessage().getAttachments().isEmpty()){
+                        for (Message.Attachment a : event.getMessage().getAttachments()){
+                            if(a.isImage()){
+                                TextComponent t = new TextComponent(" [Изображение]");
+                                toGray(t,a.getUrl());
+                                result.addExtra(t);
+                            } else if(a.isVideo()){
+                                TextComponent t = new TextComponent(" [Видео]");
+                                toGray(t,a.getUrl());
+                                result.addExtra(t);
+                            } else {
+                                TextComponent t = new TextComponent(" [Вложение]");
+                                toGray(t,a.getUrl());
+                                result.addExtra(t);
+                            }
+                        }
+                    }
                     p1.spigot().sendMessage(result);
                 }
             }
         }
+    }
+    private String removeUrl(String commentstr)
+    {
+        String urlPattern = "((https?|ftp|gopher|telnet|file|Unsure|http):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        Pattern p = Pattern.compile(urlPattern,Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(commentstr);
+        int i = 0;
+        while (m.find()) {
+            commentstr = commentstr.replaceAll(m.group(i),"").trim();
+            i++;
+        }
+        return commentstr;
+    }
+    private TextComponent getUrls(String commentstr)
+    {
+        TextComponent t = new TextComponent();
+        String urlPattern = "((https?|ftp|gopher|telnet|file|Unsure|http):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        Pattern p = Pattern.compile(urlPattern,Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(commentstr);
+        int i = 0;
+        while (m.find()) {
+            commentstr = commentstr.replaceAll(m.group(i),"").trim();
+            TextComponent t1 = new TextComponent("[Ссылка]");
+            t1.setColor(ChatColor.GRAY);
+            t1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Перейти").create()));
+            t1.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,m.group(i)));
+            t.addExtra(t1);
+            i++;
+        }
+        return t;
+    }
+
+    private void toGray(TextComponent t, String link){
+        t.setColor(ChatColor.GRAY);
+        t.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,link));
+        t.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Нажмите чтобы посмотреть").create()));
     }
     private void chat_comps(TextComponent line, TextComponent chatType, TextComponent name, TextComponent result) {
         name.setColor(ChatColor.of("#9EFF86"));
@@ -123,7 +180,7 @@ public class DiscordSRVListener {
     public void discordMessageProcessed(DiscordGuildMessagePostProcessEvent event) {
         // Example of modifying a Discord -> Minecraft message
         UUID authorLinkedUuid = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getAuthor().getId());
-        event.setProcessedMessage(event.getProcessedMessage().replace("cat", "dog"));
+        //event.setProcessedMessage(event.getProcessedMessage().replace("cat", "dog"));
         // dogs are superior to cats, obviously
         if(authorLinkedUuid!=null) {
             event.setProcessedMessage(event.getProcessedMessage().replace(event.getAuthor().getName(), Bukkit.getOfflinePlayer(authorLinkedUuid).getName()));
