@@ -17,13 +17,15 @@ import java.util.List;
 public class DisableMapCopy implements Listener {
     @EventHandler
     public void craftItem(PrepareItemCraftEvent e) {
-        Material itemType = e.getRecipe().getResult().getType();
-        //Bukkit.spigot().broadcast(new ComponentBuilder(e.getInventory().getType().name()).create());
-        for(ItemStack i : e.getInventory().getMatrix()){
-            if(i!=null){
-                if(i.getType()==Material.FILLED_MAP&&i.getItemMeta().getLore().contains("Некопируемая")){
-                    if(itemType==Material.AIR) {
-                        e.getInventory().setResult(new ItemStack(Material.AIR));
+        if(e.getRecipe()!=null){
+            Material itemType = e.getRecipe().getResult().getType();
+            //Bukkit.spigot().broadcast(new ComponentBuilder(e.getInventory().getType().name()).create());
+            for (ItemStack i : e.getInventory().getMatrix()) {
+                if (i != null) {
+                    if (i.getType() == Material.FILLED_MAP && i.getItemMeta().getLore().contains("Некопируемая")) {
+                        if (itemType == Material.AIR) {
+                            e.getInventory().setResult(new ItemStack(Material.AIR));
+                        }
                     }
                 }
             }
