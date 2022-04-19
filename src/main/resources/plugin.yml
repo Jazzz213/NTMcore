@@ -26,5 +26,10 @@ commands:
     usage: /reply
     aliases:
       - r
+  autograph:
+    description: Подписать предмет
+    usage: /autograph
+    aliases:
+      - aph
 depend:
   - DiscordSRV
