@@ -33,13 +33,16 @@ public class TellCommand implements CommandExecutor, TabExecutor {
             }
             if(args.length>1){
                 Player receiver = Bukkit.getPlayerExact(args[0]);
+                if(receiver==null){
+                    p.sendMessage(ChatColor.RED+"Игрок оффлайн");
+                    return true;
+                }
                 if (receiver.getScoreboardTags().contains("ignore."+p.getName())){
                     p.sendMessage(
                                     ChatColor.RED + "Игрок вас игнорирует"
                     );
                     return true;
                 }
-                if(receiver.isOnline()&&receiver.hasPlayedBefore()){
                     args[0]="";
                     String message = String.join(" ", args);
                     /*
@@ -84,12 +87,20 @@ public class TellCommand implements CommandExecutor, TabExecutor {
                     receiver.spigot().sendMessage(msg1);
                     receiver.playNote(receiver.getLocation(), Instrument.BELL, Note.flat(0, Note.Tone.A));
                     Bukkit.getLogger().info("["+p.getName()+" → "+receiver.getName()+"] :"+message);
+                    String[] p_tags = p.getScoreboardTags().toArray(new String[0]);
+                    String[] r_tags = receiver.getScoreboardTags().toArray(new String[0]);
+                    for(String tag : p_tags){
+                    if(tag.startsWith("reply.")){
+                        p.removeScoreboardTag(tag);
+                        }
+                    }
+                    for(String tag : r_tags){
+                        if(tag.startsWith("reply.")){
+                            receiver.removeScoreboardTag(tag);
+                        }
+                    }
                     receiver.addScoreboardTag("reply."+p.getName());
                     p.addScoreboardTag("reply."+receiver.getName());
-                }else{
-                    p.sendMessage(
-                            ChatColor.RED+"Игрок оффлайн");
-                }
             }
             //Во тута должна быть логика сообщения и не забудь про колокольчик
             //и неверное использования тоже переопредели

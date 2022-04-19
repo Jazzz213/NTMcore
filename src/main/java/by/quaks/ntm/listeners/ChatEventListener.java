@@ -45,7 +45,7 @@ public class ChatEventListener implements Listener{
             result.addExtra(DiscordSRVListener.removeUrl(msg));
             result.addExtra(DiscordSRVListener.getUrls(msg));
             for (Player p1 : Bukkit.getOnlinePlayers()){
-                if(p1.hasPermission("group.moderator")){
+                if(p1.hasPermission("group.moderator")||p1.isOp()){
                     p1.spigot().sendMessage(result);
                 }
             }
