@@ -31,5 +31,8 @@ commands:
     usage: /autograph
     aliases:
       - aph
+  report:
+    description: Написать репорт
+    usage: /report
 depend:
   - DiscordSRV

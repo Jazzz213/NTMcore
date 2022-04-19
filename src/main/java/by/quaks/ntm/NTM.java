@@ -54,6 +54,7 @@ public final class NTM extends JavaPlugin implements Listener {
         getCommand("permmute").setExecutor(new PMuteCommand());
         getCommand("reply").setExecutor(new ReplyCommand());
         getCommand("autograph").setExecutor(new AutographCommand());
+        getCommand("report").setExecutor(new ReportCommand());
         Bukkit.getPluginManager().registerEvents(new ChatEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new ClickOnPlayerEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new MuteListener(),this);
