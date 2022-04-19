@@ -1,5 +1,6 @@
 package by.quaks.ntm.commands;
 
+import by.quaks.ntm.listeners.DiscordSRVListener;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
 import org.bukkit.command.*;
@@ -38,7 +39,7 @@ public class TellCommand implements CommandExecutor, TabExecutor {
                     );
                     return true;
                 }
-                if(receiver!=null){
+                if(receiver.isOnline()&&receiver.hasPlayedBefore()){
                     args[0]="";
                     String message = String.join(" ", args);
                     /*
@@ -65,7 +66,10 @@ public class TellCommand implements CommandExecutor, TabExecutor {
                     //console.sendMessage(ChatColor.GOLD + p.getName() + " → " + receiver.getName() +" :" + message);
                     // TODO: Разобраться с BuildComponent и переделать
                     msg.addExtra(left_comp);
-                    msg.addExtra(" :"+message);
+                    //result.addExtra(DiscordSRVListener.removeUrl(msg));
+                    //result.addExtra(DiscordSRVListener.getUrls(msg));
+                    msg.addExtra(" :"+DiscordSRVListener.removeUrl(message));
+                    msg.addExtra(DiscordSRVListener.getUrls(message));
                     p.spigot().sendMessage(msg);
                     left_comp1.setText("[");
                     left_comp1.addExtra(send_comp);
@@ -75,10 +79,13 @@ public class TellCommand implements CommandExecutor, TabExecutor {
                     left_comp1.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tell "+p.getName()+" "));
                     left_comp1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("/tell "+p.getName()).create()));
                     msg1.addExtra(left_comp1);
-                    msg1.addExtra(" :"+message);
+                    msg1.addExtra(" :"+DiscordSRVListener.removeUrl(message));
+                    msg1.addExtra(DiscordSRVListener.getUrls(message));
                     receiver.spigot().sendMessage(msg1);
                     receiver.playNote(receiver.getLocation(), Instrument.BELL, Note.flat(0, Note.Tone.A));
                     Bukkit.getLogger().info("["+p.getName()+" → "+receiver.getName()+"] :"+message);
+                    receiver.addScoreboardTag("reply."+p.getName());
+                    p.addScoreboardTag("reply."+receiver.getName());
                 }else{
                     p.sendMessage(
                             ChatColor.RED+"Игрок оффлайн");
