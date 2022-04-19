@@ -1,5 +1,6 @@
 package by.quaks.ntm.listeners;
 
+import by.quaks.ntm.NTM;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import github.scarsz.discordsrv.util.WebhookUtil;
@@ -16,7 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatEventListener implements Listener{
-    ClickEvent global_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "! ");
+    ClickEvent global_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "!");
     ClickEvent trade_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "$");
     ClickEvent admin_suggest = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@");
     TextComponent dot = new TextComponent(" • ");
@@ -41,14 +42,15 @@ public class ChatEventListener implements Listener{
             chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Админ-чат").create()));
             chatType.setClickEvent(admin_suggest);
             chat_comps(line, p, msg_suggest, chatType, name, result);
-            result.addExtra(msg);
+            result.addExtra(DiscordSRVListener.removeUrl(msg));
+            result.addExtra(DiscordSRVListener.getUrls(msg));
             for (Player p1 : Bukkit.getOnlinePlayers()){
                 if(p1.hasPermission("group.moderator")){
                     p1.spigot().sendMessage(result);
                 }
             }
             //s.spigot().broadcast(result);
-            WebhookUtil.deliverMessage(DiscordUtil.getTextChannelById("959935354536861727"),event.getPlayer(),msg);
+            WebhookUtil.deliverMessage(DiscordUtil.getTextChannelById(NTM.getInstance().getConfig().getString("channels.admin")),event.getPlayer(),msg);
             Bukkit.getLogger().info("[NTMP] [A] | "+p.getName()+" • "+event.getMessage());
             return;
             //s.spigot().broadcast(result); - отправить всем
@@ -60,7 +62,8 @@ public class ChatEventListener implements Listener{
             chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Торговый чат").create()));
             chatType.setClickEvent(trade_suggest);
             chat_comps(line, p, msg_suggest, chatType, name, result);
-            result.addExtra(msg);
+            result.addExtra(DiscordSRVListener.removeUrl(msg));
+            result.addExtra(DiscordSRVListener.getUrls(msg));
             s.spigot().broadcast(result);
             Bukkit.getLogger().info("[NTMP] [$] | "+p.getName()+" • "+event.getMessage());
             return;
@@ -69,9 +72,10 @@ public class ChatEventListener implements Listener{
         if(!event.getMessage().startsWith("!") && !event.getMessage().startsWith("$")){
             chatType.setText("[L] ");
             chatType.setColor(ChatColor.GRAY);
-            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Локальный чат").create()));
+            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Локальный чат").color(ChatColor.GRAY).create()));
             chat_comps(line, p, msg_suggest, chatType, name, result);
-            result.addExtra(event.getMessage());
+            result.addExtra(DiscordSRVListener.removeUrl(event.getMessage()));
+            result.addExtra(DiscordSRVListener.getUrls(event.getMessage()));;
             Bukkit.getLogger().info("[NTMP] [L] | "+p.getName()+" • "+event.getMessage());
             for (Player other : Bukkit.getOnlinePlayers()) {
                 if(p.getWorld().getEnvironment().name().equals(other.getWorld().getEnvironment().name())){
@@ -85,10 +89,11 @@ public class ChatEventListener implements Listener{
             msg = msg.replaceFirst("!","");
             chatType.setText("[G] ");
             chatType.setColor(ChatColor.of("#f4f47c"));
-            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Написать в глобальный чат").create()));
+            chatType.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Написать в глобальный чат").color(ChatColor.GRAY).create()));
             chatType.setClickEvent(global_suggest);
             chat_comps(line, p, msg_suggest, chatType, name, result);
-            result.addExtra(msg);
+            result.addExtra(DiscordSRVListener.removeUrl(msg));
+            result.addExtra(DiscordSRVListener.getUrls(msg));
             s.spigot().broadcast(result);
             Bukkit.getLogger().info("[NTMP] [G] | "+p.getName()+" • "+event.getMessage());
         }
@@ -97,7 +102,7 @@ public class ChatEventListener implements Listener{
     private void chat_comps(TextComponent line, Player p, ClickEvent msg_suggest, TextComponent chatType, TextComponent name, TextComponent result) {
         name.setColor(ChatColor.of("#9EFF86"));
         name.setClickEvent(msg_suggest);
-        name.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("/tell "+p.getName()).create()));
+        name.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Написать "+p.getName()).color(ChatColor.GRAY).create()));
         result.addExtra(chatType);
         result.addExtra(line);
         result.addExtra(name);
