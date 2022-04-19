@@ -34,5 +34,8 @@ commands:
   report:
     description: Написать репорт
     usage: /report
+  protect:
+    description: Защитить карту от копирования
+    usage: /protect
 depend:
   - DiscordSRV

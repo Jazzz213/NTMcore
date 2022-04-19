@@ -55,10 +55,12 @@ public final class NTM extends JavaPlugin implements Listener {
         getCommand("reply").setExecutor(new ReplyCommand());
         getCommand("autograph").setExecutor(new AutographCommand());
         getCommand("report").setExecutor(new ReportCommand());
+        getCommand("protect").setExecutor(new ProtectCommand());
         Bukkit.getPluginManager().registerEvents(new ChatEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new ClickOnPlayerEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new MuteListener(),this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(),this);
+        Bukkit.getPluginManager().registerEvents(new DisableMapCopy(),this);
         getServer().getPluginManager().registerEvents(this, this);
         File file = new File(getDataFolder() + File.separator + "config.yml");
         if (!file.exists()){
