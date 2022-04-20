@@ -53,7 +53,7 @@ public class ChatUtil {
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ComponentBuilder("Ответить "+reply)
                         .color(ChatColor.GRAY)
                         .create()))
-                .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+name1+" "))
+                .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+reply+" "))
                 .append(new ComponentBuilder(" → ")
                         .color(ChatColor.GRAY)
                         .create())
@@ -75,7 +75,6 @@ public class ChatUtil {
                         .color(ChatColor.WHITE)
                         .create())
                 .create();
-
     }
     public static void sendGroupMessage(BaseComponent[] message, Collection<? extends Player> res){
         for(Player p : res){
@@ -91,19 +90,11 @@ public class ChatUtil {
         for(Player p : res){
             if(!forOp){
                 if (p.hasPermission(peremission)) {
-                    TextComponent t = new TextComponent();
-                    for(BaseComponent b : message){
-                        t.addExtra(b);
-                    }
-                    p.spigot().sendMessage(t);
+                    p.spigot().sendMessage(message);
                 }
             } else {
                 if (p.hasPermission(peremission)||p.isOp()) {
-                    TextComponent t = new TextComponent();
-                    for(BaseComponent b : message){
-                        t.addExtra(b);
-                    }
-                    p.spigot().sendMessage(t);
+                    p.spigot().sendMessage(message);
                 }
             }
         }
@@ -113,39 +104,23 @@ public class ChatUtil {
         for(Player p : res){
             if(!forOp){
                 if (p.getScoreboardTags().contains(tag)) {
-                    TextComponent t = new TextComponent();
-                    for(BaseComponent b : message){
-                        t.addExtra(b);
-                    }
-                    p.spigot().sendMessage(t);
+                    p.spigot().sendMessage(message);
                 }
             } else {
                 if (p.getScoreboardTags().contains(tag)||p.isOp()) {
-                    TextComponent t = new TextComponent();
-                    for(BaseComponent b : message){
-                        t.addExtra(b);
-                    }
-                    p.spigot().sendMessage(t);
+                    p.spigot().sendMessage(message);
                 }
             }
         }
     }
     public static void sendPrivateMessage(BaseComponent[] message, Player p){
-        TextComponent t = new TextComponent();
-        for(BaseComponent b : message){
-            t.addExtra(b);
-        }
-        p.spigot().sendMessage(t);
+        p.spigot().sendMessage(message);
     }
     public static void sendNearby(BaseComponent[] message,Player sender, int r){
         for (Player other : Bukkit.getOnlinePlayers()) {
             if(sender.getWorld().getEnvironment().name().equals(other.getWorld().getEnvironment().name())){
                 if (other.getLocation().distance(sender.getLocation()) <= r) {
-                    TextComponent t = new TextComponent();
-                    for(BaseComponent b : message){
-                        t.addExtra(b);
-                    }
-                    other.spigot().sendMessage(t);
+                    other.spigot().sendMessage(message);
                 }
             }
         }
