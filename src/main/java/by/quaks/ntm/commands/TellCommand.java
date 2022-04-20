@@ -38,10 +38,10 @@ public class TellCommand implements CommandExecutor, TabExecutor {
                 args[0]="";
                 String message = String.join(" ", args);
                 ChatUtil.sendPrivateMessage(
-                        ChatUtil.genTellMessage(p.getName(),receiver.getName(),message),p
+                        ChatUtil.genTellMessage(p.getName(),receiver.getName(),message,receiver.getName()),p
                 );
                 ChatUtil.sendPrivateMessage(
-                        ChatUtil.genTellMessage(p.getName(),receiver.getName(),message),receiver
+                        ChatUtil.genTellMessage(p.getName(),receiver.getName(),message,p.getName()),receiver
                 );
                 receiver.playNote(receiver.getLocation(), Instrument.BELL, Note.flat(0, Note.Tone.A));
                 Bukkit.getLogger().info("["+p.getName()+" → "+receiver.getName()+"] :"+message);

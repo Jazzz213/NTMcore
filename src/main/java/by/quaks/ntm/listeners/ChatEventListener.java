@@ -22,7 +22,7 @@ public class ChatEventListener implements Listener{
             msg = msg.replaceFirst("[@]","");
             ChatUtil.sendGroupMessage(
                     ChatUtil.genChatMessage(
-                            "[A]", p.getName(), msg, "Администрация", "Написать "+p.getName(), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@"), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+p.getName()), ChatColor.RED, ChatColor.of("#9EFF86"),ChatColor.WHITE
+                            "[A]", p.getName(), msg, "Администрация", "Написать "+p.getName(), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@"), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+p.getName()+" "), ChatColor.RED, ChatColor.of("#9EFF86"),ChatColor.WHITE
                     ),"group.moderator",true
             );
             WebhookUtil.deliverMessage(DiscordUtil.getTextChannelById(NTM.getInstance().getConfig().getString("channels.admin")),event.getPlayer(),msg);
@@ -33,7 +33,7 @@ public class ChatEventListener implements Listener{
             msg = msg.replaceFirst("[$]","");
             ChatUtil.sendGroupMessage(
                     ChatUtil.genChatMessage(
-                            "[$]", p.getName(), msg, "Торговый чат", "Написать "+p.getName(), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"$"), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+p.getName()), ChatColor.GREEN, ChatColor.of("#9EFF86"),ChatColor.WHITE
+                            "[$]", p.getName(), msg, "Торговый чат", "Написать "+p.getName(), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"$"), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+p.getName()+" "), ChatColor.GREEN, ChatColor.of("#9EFF86"),ChatColor.WHITE
                     ),Bukkit.getOnlinePlayers()
             );
             Bukkit.getLogger().info("[NTMP] [$] | "+p.getName()+" • "+event.getMessage());
@@ -43,7 +43,7 @@ public class ChatEventListener implements Listener{
             msg = msg.replaceFirst("[!]","");
             ChatUtil.sendGroupMessage(
                     ChatUtil.genChatMessage(
-                            "[G]", p.getName(), msg, "Глобальный чат", "Написать "+p.getName(), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"$"), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+p.getName()), ChatColor.of("#f4f47c"), ChatColor.of("#9EFF86"),ChatColor.WHITE
+                            "[G]", p.getName(), msg, "Глобальный чат", "Написать "+p.getName(), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"!"), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+p.getName()+" "), ChatColor.of("#f4f47c"), ChatColor.of("#9EFF86"),ChatColor.WHITE
                     ),Bukkit.getOnlinePlayers()
             );
             Bukkit.getLogger().info("[NTMP] [G] | "+p.getName()+" • "+event.getMessage());

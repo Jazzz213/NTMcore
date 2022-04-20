@@ -47,13 +47,13 @@ public class ChatUtil {
                 .append(URLs)
                 .create();
     }
-    public static BaseComponent[] genTellMessage(String name1, String name2, String message){
+    public static BaseComponent[] genTellMessage(String name1, String name2, String message, String reply){
         BaseComponent[] names = new ComponentBuilder(name1)
                 .color(ChatColor.GOLD)
-                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ComponentBuilder("Ответить "+name1)
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ComponentBuilder("Ответить "+reply)
                         .color(ChatColor.GRAY)
                         .create()))
-                .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+name1))
+                .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+name1+" "))
                 .append(new ComponentBuilder(" → ")
                         .color(ChatColor.GRAY)
                         .create())
@@ -79,7 +79,11 @@ public class ChatUtil {
     }
     public static void sendGroupMessage(BaseComponent[] message, Collection<? extends Player> res){
         for(Player p : res){
-            p.spigot().sendMessage(message);
+            TextComponent t = new TextComponent();
+            for(BaseComponent b : message){
+                t.addExtra(b);
+            }
+            p.spigot().sendMessage(t);
         }
     }
     public static void sendGroupMessage(BaseComponent[] message, String peremission, boolean forOp){
@@ -87,11 +91,19 @@ public class ChatUtil {
         for(Player p : res){
             if(!forOp){
                 if (p.hasPermission(peremission)) {
-                    p.spigot().sendMessage(message);
+                    TextComponent t = new TextComponent();
+                    for(BaseComponent b : message){
+                        t.addExtra(b);
+                    }
+                    p.spigot().sendMessage(t);
                 }
             } else {
                 if (p.hasPermission(peremission)||p.isOp()) {
-                    p.spigot().sendMessage(message);
+                    TextComponent t = new TextComponent();
+                    for(BaseComponent b : message){
+                        t.addExtra(b);
+                    }
+                    p.spigot().sendMessage(t);
                 }
             }
         }
@@ -101,23 +113,39 @@ public class ChatUtil {
         for(Player p : res){
             if(!forOp){
                 if (p.getScoreboardTags().contains(tag)) {
-                    p.spigot().sendMessage(message);
+                    TextComponent t = new TextComponent();
+                    for(BaseComponent b : message){
+                        t.addExtra(b);
+                    }
+                    p.spigot().sendMessage(t);
                 }
             } else {
                 if (p.getScoreboardTags().contains(tag)||p.isOp()) {
-                    p.spigot().sendMessage(message);
+                    TextComponent t = new TextComponent();
+                    for(BaseComponent b : message){
+                        t.addExtra(b);
+                    }
+                    p.spigot().sendMessage(t);
                 }
             }
         }
     }
     public static void sendPrivateMessage(BaseComponent[] message, Player p){
-        p.spigot().sendMessage(message);
+        TextComponent t = new TextComponent();
+        for(BaseComponent b : message){
+            t.addExtra(b);
+        }
+        p.spigot().sendMessage(t);
     }
     public static void sendNearby(BaseComponent[] message,Player sender, int r){
         for (Player other : Bukkit.getOnlinePlayers()) {
             if(sender.getWorld().getEnvironment().name().equals(other.getWorld().getEnvironment().name())){
                 if (other.getLocation().distance(sender.getLocation()) <= r) {
-                    other.spigot().sendMessage(message);
+                    TextComponent t = new TextComponent();
+                    for(BaseComponent b : message){
+                        t.addExtra(b);
+                    }
+                    other.spigot().sendMessage(t);
                 }
             }
         }
