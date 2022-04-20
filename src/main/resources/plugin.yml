@@ -8,7 +8,7 @@ commands:
       - m
       - tell
       - w
-    description: Отпраыить личное сообщение
+    description: Отправить личное сообщение
     usage: /msg Никнейм
   burp:
     description: Смачно burp'нуть

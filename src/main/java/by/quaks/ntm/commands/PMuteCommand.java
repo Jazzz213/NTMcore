@@ -2,7 +2,6 @@ package by.quaks.ntm.commands;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.util.DiscordUtil;
-import net.dv8tion.jda.api.entities.Role;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,7 +25,7 @@ public class PMuteCommand implements CommandExecutor {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-            switch (args.length){
+        switch (args.length){
                 case 0:
                     sender.sendMessage(
                             ChatColor.RED+"Неизвестная или неполная команда:\n"+
