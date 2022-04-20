@@ -156,6 +156,23 @@ public class DiscordSRVListener {
         result.addExtra(chat_type);
         result.addExtra(line);
         result.addExtra(name);
+        if(event.getMessage().getReferencedMessage()!=null){
+            UUID authorLinkedUuid2 = DiscordSRV.getPlugin().getAccountLinkManager().getUuid(event.getMessage().getReferencedMessage().getAuthor().getId());
+            String name1;
+            if(authorLinkedUuid2!=null){
+                name1 = Bukkit.getOfflinePlayer(authorLinkedUuid2).getName();
+            }else{
+                name1 = event.getMessage().getReferencedMessage().getAuthor().getName();
+            }
+            TextComponent reply = new TextComponent(", отвечая "+name1);
+            reply.setColor(ChatColor.of("#9EFF86"));
+            if(!event.getMessage().getReferencedMessage().getContentDisplay().equals("")){
+                reply.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(name1 + " • " + event.getMessage().getReferencedMessage().getContentDisplay())
+                        .color(ChatColor.GRAY)
+                        .create()));
+            }
+            result.addExtra(reply);
+        }
         result.addExtra(dot);
         result.addExtra(removeUrl(EmojiParser.parseToAliases(event.getMessage().getContentDisplay())));
         result.addExtra(getUrls(EmojiParser.parseToAliases(event.getMessage().getContentDisplay())));
