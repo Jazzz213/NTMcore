@@ -51,7 +51,7 @@ public class ChatEventListener implements Listener{
         }
         ChatUtil.sendNearby(
                 ChatUtil.genChatMessage(
-                        "[L]", p.getName(), msg, "Локальный чат", "Написать "+p.getName(), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,null), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+p.getName()), ChatColor.GRAY, ChatColor.of("#9EFF86"),ChatColor.WHITE
+                        "[L]", p.getName(), msg, "Локальный чат", "Написать "+p.getName(), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,null), new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"/tell "+p.getName()+" "), ChatColor.GRAY, ChatColor.of("#9EFF86"),ChatColor.WHITE
                 ),p,100
         );
         Bukkit.getLogger().info("[NTMP] [L] | "+p.getName()+" • "+event.getMessage());
