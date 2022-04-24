@@ -37,10 +37,12 @@ public class DisableMapCopy implements Listener {
         if(e.getInventory().getType()==InventoryType.CARTOGRAPHY){
             if(e.getClickedInventory()!=null){
                 if (e.getClickedInventory().getItem(0) != null && e.getClickedInventory().getItem(1) != null) {
-                    if (e.getClickedInventory().getItem(0).getType() == Material.FILLED_MAP && e.getClickedInventory().getItem(0).getItemMeta().getLore().contains("Некопируемая") && e.getClickedInventory().getItem(1).getType() == Material.MAP) {
-                        e.getClickedInventory().setItem(2, e.getClickedInventory().getItem(0));
-                        p.getInventory().addItem(new ItemStack(Material.MAP,1));
-                        return;
+                    if(e.getClickedInventory().getItem(0).getItemMeta().getLore()!=null){
+                        if (e.getClickedInventory().getItem(0).getType() == Material.FILLED_MAP && e.getClickedInventory().getItem(0).getItemMeta().getLore().contains("Некопируемая") && e.getClickedInventory().getItem(1).getType() == Material.MAP) {
+                            e.getClickedInventory().setItem(2, e.getClickedInventory().getItem(0));
+                            p.getInventory().addItem(new ItemStack(Material.MAP, 1));
+                            return;
+                        }
                     }
                 }
             }
