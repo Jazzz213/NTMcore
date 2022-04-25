@@ -17,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 
 public final class NTM extends JavaPlugin implements Listener {
-
+    //test
     private DiscordSRVListener discordsrvListener = new DiscordSRVListener(this);
     private DeathListenerSRV deathListener = new DeathListenerSRV(this);
     static NTM main;
