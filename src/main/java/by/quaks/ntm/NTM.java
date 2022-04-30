@@ -1,13 +1,13 @@
 package by.quaks.ntm;
 
 import by.quaks.ntm.commands.*;
+import by.quaks.ntm.files.MuteList;
 import by.quaks.ntm.listeners.*;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -43,25 +43,8 @@ public final class NTM extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        main = this;
-        DiscordSRV.api.subscribe(discordsrvListener);
-        DiscordSRV.api.subscribe(deathListener);
-        getLogger().info("NTM - Основной плагин запущен");
-        getCommand("msg").setExecutor(new TellCommand());
-        getCommand("msg").setTabCompleter(new TellCommand());
-        getCommand("burp").setExecutor(new BurpCommand());
-        getCommand("ignore").setExecutor(new IgnoreCommand());
-        getCommand("permmute").setExecutor(new PMuteCommand());
-        getCommand("reply").setExecutor(new ReplyCommand());
-        getCommand("autograph").setExecutor(new AutographCommand());
-        getCommand("report").setExecutor(new ReportCommand());
-        getCommand("protect").setExecutor(new ProtectCommand());
-        Bukkit.getPluginManager().registerEvents(new ChatEventListener(), this);
-        Bukkit.getPluginManager().registerEvents(new ClickOnPlayerEventListener(), this);
-        Bukkit.getPluginManager().registerEvents(new MuteListener(),this);
-        Bukkit.getPluginManager().registerEvents(new DeathListener(),this);
-        Bukkit.getPluginManager().registerEvents(new DisableMapCopy(),this);
-        getServer().getPluginManager().registerEvents(this, this);
+
+        MuteList.setup();
         File file = new File(getDataFolder() + File.separator + "config.yml");
         if (!file.exists()){
             getConfig().addDefault("channels.admin", "000000000000000000");
@@ -73,6 +56,27 @@ public final class NTM extends JavaPlugin implements Listener {
             saveConfig();
             reloadConfig();
         }
+
+
+        main = this;
+        DiscordSRV.api.subscribe(discordsrvListener);
+        DiscordSRV.api.subscribe(deathListener);
+        getLogger().info("NTM - Основной плагин запущен");
+        getCommand("msg").setExecutor(new TellCommand());
+        getCommand("msg").setTabCompleter(new TellCommand());
+        getCommand("burp").setExecutor(new BurpCommand());
+        getCommand("ignore").setExecutor(new IgnoreCommand());
+        getCommand("mute").setExecutor(new MuteCommand());
+        getCommand("reply").setExecutor(new ReplyCommand());
+        getCommand("autograph").setExecutor(new AutographCommand());
+        getCommand("report").setExecutor(new ReportCommand());
+        getCommand("protect").setExecutor(new ProtectCommand());
+        Bukkit.getPluginManager().registerEvents(new ChatEventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ClickOnPlayerEventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new MuteListener(),this);
+        Bukkit.getPluginManager().registerEvents(new DeathListener(),this);
+        Bukkit.getPluginManager().registerEvents(new DisableMapCopy(),this);
+        getServer().getPluginManager().registerEvents(this, this);
     }
     public void CheckConfig() {
         if(getConfig().get("channels.admin") == null){
