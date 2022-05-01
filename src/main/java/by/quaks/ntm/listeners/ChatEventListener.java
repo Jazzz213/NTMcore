@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatEventListener implements Listener{
@@ -56,5 +57,12 @@ public class ChatEventListener implements Listener{
         );
         Bukkit.getLogger().info("[NTMP] [L] | "+p.getName()+" • "+msg);
 
+    }
+    @EventHandler
+    public void chatLimiter(AsyncPlayerChatEvent event){
+        if(event.getMessage().length()>200){
+            event.getPlayer().sendMessage(ChatColor.RED + "Сообщение слишком длинное");
+            event.setCancelled(true);
+        }
     }
 }
