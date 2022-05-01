@@ -1,6 +1,8 @@
 package by.quaks.ntm.commands;
 
 import by.quaks.ntm.files.MuteList;
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.util.DiscordUtil;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -34,7 +36,7 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                                 new TextComponent(ChatColor.RED + monkey.getName() + " был замьючен навсегда"
                                 ));
                         sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был замьючен навсегда");
-                        //DiscordUtil.addRolesToMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(monkey.getUniqueId())),DiscordUtil.getRole("960513488478949416"));
+                        DiscordUtil.addRolesToMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(monkey.getUniqueId())),DiscordUtil.getRole("960513488478949416"));
                         MuteList.get().set(monkey.getName() + ".muted", true);
                         Date d = new Date();
                         Calendar c = Calendar.getInstance();
@@ -51,9 +53,9 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                                 new TextComponent(ChatColor.RED + monkey.getName() + " был размьючен"
                                 ));
                         sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был размьючен");
-//                            {
-//                                DiscordUtil.removeRolesFromMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(monkey.getUniqueId())), DiscordUtil.getRole("960513488478949416"));
-//                            }
+                            {
+                                DiscordUtil.removeRolesFromMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(monkey.getUniqueId())), DiscordUtil.getRole("960513488478949416"));
+                            }
                         MuteList.get().set(monkey.getName() + ".muted", false);
                         MuteList.get().set(monkey.getName() + ".mute_date",null);
                         MuteList.save();
@@ -99,6 +101,7 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                     sender.getServer().spigot().broadcast(
                             new TextComponent(ChatColor.RED + monkey.getName() + " был замьючен на "+ ChatColor.YELLOW + args[1] + " секунд"
                             ));
+                    sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был замьючен на "+args[1]+" секунд");
                 } else
                 if(args[2].equals("minutes")){
                     MuteList.get().set(monkey.getName() + ".muted", true);
@@ -112,6 +115,7 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                     sender.getServer().spigot().broadcast(
                             new TextComponent(ChatColor.RED + monkey.getName() + " был замьючен на "+ ChatColor.YELLOW + args[1] + " минут"
                             ));
+                    sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был замьючен на "+args[1]+" минут");
                 } else
                 if(args[2].equals("hours")){
                     MuteList.get().set(monkey.getName() + ".muted", true);
@@ -125,6 +129,7 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                     sender.getServer().spigot().broadcast(
                             new TextComponent(ChatColor.RED + monkey.getName() + " был замьючен на "+ ChatColor.YELLOW + args[1] + " часов"
                             ));
+                    sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был замьючен на "+args[1]+" часов");
                 } else
                 if(args[2].equals("days")){
                     MuteList.get().set(monkey.getName() + ".muted", true);
@@ -138,6 +143,7 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                     sender.getServer().spigot().broadcast(
                             new TextComponent(ChatColor.RED + monkey.getName() + " был замьючен на "+ ChatColor.YELLOW + args[1] + " дней"
                             ));
+                    sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был замьючен на "+args[1]+" дней");
                 } else {
                     sender.sendMessage(
                             ChatColor.RED + "Ошибка: дата указана не верно");

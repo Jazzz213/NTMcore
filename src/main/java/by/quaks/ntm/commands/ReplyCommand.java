@@ -16,7 +16,7 @@ public class ReplyCommand implements CommandExecutor, TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player){
             Player p = (Player) sender;
-            String name = "abobus";
+            String name = null;
             for(String tag : p.getScoreboardTags()){
                 if(tag.startsWith("reply.")){
                     name = tag.replaceFirst("reply.","");
