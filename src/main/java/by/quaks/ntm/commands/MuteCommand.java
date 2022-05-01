@@ -102,6 +102,7 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                             new TextComponent(ChatColor.RED + monkey.getName() + " был замьючен на "+ ChatColor.YELLOW + args[1] + " секунд"
                             ));
                     sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был замьючен на "+args[1]+" секунд");
+                    DiscordUtil.addRolesToMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(monkey.getUniqueId())),DiscordUtil.getRole("960513488478949416"));
                 } else
                 if(args[2].equals("minutes")){
                     MuteList.get().set(monkey.getName() + ".muted", true);
@@ -116,6 +117,7 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                             new TextComponent(ChatColor.RED + monkey.getName() + " был замьючен на "+ ChatColor.YELLOW + args[1] + " минут"
                             ));
                     sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был замьючен на "+args[1]+" минут");
+                    DiscordUtil.addRolesToMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(monkey.getUniqueId())),DiscordUtil.getRole("960513488478949416"));
                 } else
                 if(args[2].equals("hours")){
                     MuteList.get().set(monkey.getName() + ".muted", true);
@@ -130,6 +132,7 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                             new TextComponent(ChatColor.RED + monkey.getName() + " был замьючен на "+ ChatColor.YELLOW + args[1] + " часов"
                             ));
                     sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был замьючен на "+args[1]+" часов");
+                    DiscordUtil.addRolesToMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(monkey.getUniqueId())),DiscordUtil.getRole("960513488478949416"));
                 } else
                 if(args[2].equals("days")){
                     MuteList.get().set(monkey.getName() + ".muted", true);
@@ -144,6 +147,7 @@ public class MuteCommand implements CommandExecutor, TabExecutor {
                             new TextComponent(ChatColor.RED + monkey.getName() + " был замьючен на "+ ChatColor.YELLOW + args[1] + " дней"
                             ));
                     sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + monkey.getName() + " был замьючен на "+args[1]+" дней");
+                    DiscordUtil.addRolesToMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(monkey.getUniqueId())),DiscordUtil.getRole("960513488478949416"));
                 } else {
                     sender.sendMessage(
                             ChatColor.RED + "Ошибка: дата указана не верно");

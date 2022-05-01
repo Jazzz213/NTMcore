@@ -6,15 +6,17 @@ import by.quaks.ntm.listeners.*;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.util.DiscordUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Date;
 
 public final class NTM extends JavaPlugin implements Listener {
     //test
@@ -41,9 +43,31 @@ public final class NTM extends JavaPlugin implements Listener {
         //event.getPlayer().sendMessage(ChatColor.GREEN + "You're linked to " + user.getAsTag());
     }
 
+    public void scheduleTimer(Plugin plugin, final World world) {
+        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            public void run() {
+                long time = world.getTime();
+                if (time == 13000) {
+                    Date d2 = new Date();
+                    for(OfflinePlayer p : plugin.getServer().getOfflinePlayers()){
+                        if (MuteList.get().getBoolean(p.getName() + ".muted")){
+                            Date d1 = (Date) MuteList.get().get(p.getName() + ".mute_date");
+                            if (!d1.after(d2)) {
+                                MuteList.get().set(p.getName() + ".muted", false);
+                                MuteList.get().set(p.getName() + ".mute_date", null);
+                                MuteList.save();
+                                DiscordUtil.removeRolesFromMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(p.getUniqueId())), DiscordUtil.getRole("960513488478949416"));
+                            }
+                        }
+                    }
+                }
+            }
+        }, 1, 1);
+    }
+
     @Override
     public void onEnable() {
-
+        scheduleTimer(this,Bukkit.getServer().getWorld("world"));
         MuteList.setup();
         File file = new File(getDataFolder() + File.separator + "config.yml");
         if (!file.exists()){
