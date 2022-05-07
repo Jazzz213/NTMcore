@@ -2,6 +2,7 @@ package by.quaks.ntm;
 
 import by.quaks.ntm.commands.*;
 import by.quaks.ntm.files.MuteList;
+import by.quaks.ntm.files.WarnList;
 import by.quaks.ntm.listeners.*;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
@@ -59,6 +60,7 @@ public final class NTM extends JavaPlugin implements Listener {
                                 DiscordUtil.removeRolesFromMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(p.getUniqueId())), DiscordUtil.getRole("960513488478949416"));
                             }
                         }
+                        DiscordUtil.removeRolesFromMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(p.getUniqueId())), DiscordUtil.getRole("962827395784642580"));
                     }
                 }
             }
@@ -69,6 +71,7 @@ public final class NTM extends JavaPlugin implements Listener {
     public void onEnable() {
         scheduleTimer(this,Bukkit.getServer().getWorld("world"));
         MuteList.setup();
+        WarnList.setup();
         File file = new File(getDataFolder() + File.separator + "config.yml");
         if (!file.exists()){
             getConfig().addDefault("channels.admin", "000000000000000000");
@@ -95,11 +98,14 @@ public final class NTM extends JavaPlugin implements Listener {
         getCommand("autograph").setExecutor(new AutographCommand());
         getCommand("report").setExecutor(new ReportCommand());
         getCommand("protect").setExecutor(new ProtectCommand());
+        getCommand("warn").setExecutor(new WarnCommand());
+        getCommand("ban").setExecutor(new BanCommand());
         Bukkit.getPluginManager().registerEvents(new ChatEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new ClickOnPlayerEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new MuteListener(),this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(),this);
         Bukkit.getPluginManager().registerEvents(new DisableMapCopy(),this);
+        Bukkit.getPluginManager().registerEvents(new BannedRoleListener(),this);
         getServer().getPluginManager().registerEvents(this, this);
     }
     public void CheckConfig() {

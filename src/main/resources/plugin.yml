@@ -35,5 +35,11 @@ commands:
   protect:
     description: Защитить карту от копирования
     usage: /protect
+  warn:
+    description: Выдвть варн
+    usage: /warn НИК МОЩНОСТЬ ПРИЧИНА
+  ban:
+    description: dwdawaw
+    usage: dawadwdadaw
 depend:
   - DiscordSRV
