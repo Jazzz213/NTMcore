@@ -1,7 +1,10 @@
 package by.quaks.ntm.commands;
 
 import by.quaks.ntm.files.WarnList;
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.util.DiscordUtil;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -62,16 +65,26 @@ public class BanCommand implements CommandExecutor, TabExecutor {
                     String message2 = String.join(" ", args2);
                     if(args[2].equals("days")){
                         Bukkit.getServer().getBanList(BanList.Type.NAME).addBan(args[0],ChatColor.RED+message2,new Date(System.currentTimeMillis()+ 60L *60*1000*24*Integer.parseInt(args[1])),null);
+                        sender.getServer().spigot().broadcast(
+                                new TextComponent(org.bukkit.ChatColor.RED + args[0] + " был забанен на "+ org.bukkit.ChatColor.YELLOW + args[1] + ChatColor.RED+ " дней (" + removeChars(message2) +")"
+                                ));
+                        sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + args[0] + " был забанен на "+args[1]+" дней ("+message2+")");
                     }
                     if(args[2].equals("hours")){
                         Bukkit.getServer().getBanList(BanList.Type.NAME).addBan(args[0],ChatColor.RED+message2,new Date(System.currentTimeMillis()+ 60L *60*1000*Integer.parseInt(args[1])),null);
+                        sender.getServer().spigot().broadcast(
+                                new TextComponent(org.bukkit.ChatColor.RED + args[0] + " был забанен на "+ org.bukkit.ChatColor.YELLOW + args[1] + ChatColor.RED+ " часов (" + removeChars(message2) +")"
+                                ));
+                        sender.getServer().dispatchCommand(sender.getServer().getConsoleSender(), "discordsrv broadcast " + args[0] + " был забанен на "+args[1]+" часов ("+message2+")");
                     }
+                    DiscordUtil.addRolesToMember(DiscordUtil.getMemberById(DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(Bukkit.getServer().getOfflinePlayer(args[0]).getUniqueId())), DiscordUtil.getRole("962827395784642580"));
+                    String name = args[0];
                     args[0] = "";
                     args[1] = "";
                     args[2] = "";
                     String message = String.join(" ", args);
-                    if(Bukkit.getServer().getPlayer(args[0])!=null) {
-                        Bukkit.getServer().getPlayer(args[0]).kickPlayer(ChatColor.RED + "Вы были забанены.\n" + removeChars(message));
+                    if(Bukkit.getServer().getPlayer(name)!=null) {
+                        Bukkit.getServer().getPlayer(name).kickPlayer(ChatColor.RED + "Вы были забанены.\n" + removeChars(message));
                     }
                 }else{
                     sender.sendMessage(ChatColor.RED+"Такого игрока не существует");
